@@ -35,7 +35,7 @@ jobs:
         working-directory: ./client
 
       - name: Build
-        run: npm run build
+        run: npm run build -- --base=/CarePulse-Smart-Hospital-Management-System/
         working-directory: ./client
 
       - name: Setup Pages
