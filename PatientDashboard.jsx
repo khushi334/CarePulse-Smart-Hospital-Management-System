@@ -20,10 +20,34 @@ export default function PatientDashboard() {
   // PATIENT METABOLIC METRICS HEALTH VITALS STATE
   const [vitals] = useState({ bp: '122/81 mmHg', pulse: '74 BPM', spo2: '98%', temp: '98.6 °F' });
 
-  const fetchAppointments = async () => {
+ const fetchAppointments = async () => {
     setFetching(true);
     try {
-      
+      // 🟢 MOCK BULK RECOVERY FOR STATIC SHOWCASE
+      // If our local tracking list hasn't been initialized yet, we pre-populate it
+      if (appointments.length === 0) {
+        const structuralInitialMock = [
+          {
+            _id: "MOCK-TX-99102",
+            doctorName: "Dr. A.K. Sharma (Cardiology)",
+            date: "2026-06-03",
+            timeSlot: "09:00 AM - 10:00 AM",
+            status: "Pending",
+            tokenNumber: 4
+          },
+          {
+            _id: "MOCK-TX-98712",
+            doctorName: "Dr. Priya Patel (Pediatrics)",
+            date: "2026-05-28",
+            timeSlot: "11:00 AM - 12:00 PM",
+            status: "Completed",
+            prescription: "Amoxicillin 500mg — Take twice daily after food for 5 days. Maintain high fluid intake.",
+            tokenNumber: 12
+          }
+        ];
+        setAppointments(structuralInitialMock);
+      }
+
       // Read administrative live crisis broadcast network wire
       const activeBroadcast = localStorage.getItem('sysEmergencyBroadcast');
       setGlobalAlert(activeBroadcast || '');
@@ -79,17 +103,32 @@ export default function PatientDashboard() {
     if (!date) return;
     setLoading(true);
     setMessage('');
+    
     try {
+      // 🟢 MOCK AUTHORIZATION GENERATOR ENGINE
+      // Instead of hitting a non-existent localhost:5000 API router, we manufacture
+      // a clean data payload locally and immediately injection-push it into your tracking ledger!
       
-      const data = await response.json();
-      if (response.ok) {
-        setMessage(`Success! Token #${data.appointment.tokenNumber} issued permanently.`);
-        setDate('');
-        fetchAppointments();
-      } else {
-        setMessage(`⚠️ ${data.message || 'Network synchronization drop error.'}`);
-      }
+      const manufacturedToken = Math.floor(100 + Math.random() * 900);
+      
+      const newAppointmentTicket = {
+        _id: "MOCK-TX-" + Date.now(),
+        doctorName: doctorName,
+        date: date,
+        timeSlot: timeSlot,
+        status: "Pending",
+        tokenNumber: manufacturedToken
+      };
+
+      // Unshift inserts the newly scheduled appointment right at the very top of your list layout
+      setAppointments(prev => [newAppointmentTicket, ...prev]);
+      
+      // Update our state validation banner
+      setMessage(`Success! Token #${manufacturedToken} issued permanently.`);
+      setDate('');
+      
     } catch (err) {
+      console.error("Internal application sync simulation event crash:", err.message);
       setMessage('⚠️ Failed to send appointment request.');
     } finally {
       setLoading(false);
