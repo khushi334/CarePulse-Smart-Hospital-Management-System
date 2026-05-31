@@ -30,6 +30,7 @@ export default function App() {
       <Routes>
         {/* Public Portal Route */}
         <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
 
         {/* Locked Protected Workspace Gateways */}
@@ -44,7 +45,7 @@ export default function App() {
             <DoctorDashboard />
           </ProtectedRoute>
         } />
-        <Route path="/home" element={<Home />} />
+        
         
         <Route path="/admin-dashboard" element={
           <ProtectedRoute allowedRole="admin">
