@@ -39,37 +39,22 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+      // 🟢 MOCK BYPASS FOR GITHUB PAGES SHOWCASE
+      // Instead of hitting a non-existent live server, we auto-populate mock details
+      // to let evaluators inspect your UI modules instantly!
+      
+      localStorage.setItem('userRole', activeRole);
+      localStorage.setItem('userName', activeRole === 'patient' ? 'Alex Patient' : activeRole === 'doctor' ? 'Dr. Sharma' : 'System Admin');
+      localStorage.setItem('userId', 'mock-id-12345');
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Invalid email or password combination.');
-      }
-
-      // Verify that the selected role button matches the actual database account role
-      if (data.user.role !== activeRole) {
-        throw new Error(`Access Denied: This account is registered as a ${data.user.role}, not a ${activeRole}.`);
-      }
-
-      if (data && data.user) {
-        localStorage.setItem('userRole', data.user.role);
-        localStorage.setItem('userName', data.user.name);
-        localStorage.setItem('userId', data.user.id || data.user._id);
-
-        // Conditional router gates redirect
-        if (data.user.role === 'patient') navigate('/patient-dashboard');
-        else if (data.user.role === 'doctor') navigate('/doctor-dashboard');
-        else if (data.user.role === 'admin') navigate('/admin-dashboard');
-      }
+      // Instantly route to your dashboard targets smoothly
+      if (activeRole === 'patient') navigate('/patient-dashboard');
+      else if (activeRole === 'doctor') navigate('/doctor-dashboard');
+      else if (activeRole === 'admin') navigate('/admin-dashboard');
 
     } catch (err) {
       console.error("Login verification crash event:", err.message);
-      setError(err.message || 'Failed to establish connection with server terminal.');
+      setError('Failed to establish connection with server terminal.');
     } finally {
       setLoading(false);
     }
