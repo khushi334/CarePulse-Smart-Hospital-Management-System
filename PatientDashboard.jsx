@@ -23,11 +23,7 @@ export default function PatientDashboard() {
   const fetchAppointments = async () => {
     setFetching(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/hospital/appointments/patient/${userId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setAppointments(data);
-      }
+      
       // Read administrative live crisis broadcast network wire
       const activeBroadcast = localStorage.getItem('sysEmergencyBroadcast');
       setGlobalAlert(activeBroadcast || '');
@@ -84,11 +80,7 @@ export default function PatientDashboard() {
     setLoading(true);
     setMessage('');
     try {
-      const response = await fetch('http://localhost:5000/api/hospital/book', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ patientId: userId, patientName: userName, doctorName, date, timeSlot })
-      });
+      
       const data = await response.json();
       if (response.ok) {
         setMessage(`Success! Token #${data.appointment.tokenNumber} issued permanently.`);
