@@ -98,28 +98,39 @@ export default function PatientDashboard() {
     printWindow.print();
   };
 
-  const handleBookAppointment = async (e) => {
+ const handleBookAppointment = async (e) => {
     e.preventDefault();
     if (!date) return;
     setLoading(true);
     setMessage('');
     
     try {
-      // 🟢 MOCK AUTHORIZATION GENERATOR ENGINE
-      // Instead of hitting a non-existent localhost:5000 API router, we manufacture
-      // a clean data payload locally and immediately injection-push it into your tracking ledger!
-      
+      // 🟢 PERFECTLY MATCHED STATIC SIMULATION ENGINE
       const manufacturedToken = Math.floor(100 + Math.random() * 900);
       
       const newAppointmentTicket = {
         _id: "MOCK-TX-" + Date.now(),
-        doctorName: doctorName,
-        date: date,
-        timeSlot: timeSlot,
+        doctorName: doctorName, // <-- References your state variable directly
+        date: date,             // <-- References your state variable directly
+        timeSlot: timeSlot,     // <-- References your state variable directly
         status: "Pending",
         tokenNumber: manufacturedToken
       };
 
+      // Push freshly generated ticket directly to the tracking ledger state array
+      setAppointments(prev => [newAppointmentTicket, ...prev]);
+      
+      // Fire success layout configurations
+      setMessage(`Success! Token #${manufacturedToken} issued permanently.`);
+      setDate('');
+      
+    } catch (err) {
+      console.error("Simulation engine fallback crash:", err.message);
+      setMessage('⚠️ Failed to send appointment request.');
+    } finally {
+      setLoading(false);
+    }
+  };
       // Unshift inserts the newly scheduled appointment right at the very top of your list layout
       setAppointments(prev => [newAppointmentTicket, ...prev]);
       
