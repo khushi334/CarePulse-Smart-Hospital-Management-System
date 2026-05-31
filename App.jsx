@@ -44,6 +44,7 @@ export default function App() {
             <DoctorDashboard />
           </ProtectedRoute>
         } />
+        <Route path="/home" element={<Home />} />
         
         <Route path="/admin-dashboard" element={
           <ProtectedRoute allowedRole="admin">
